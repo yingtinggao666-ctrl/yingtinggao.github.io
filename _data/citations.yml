@@ -1,24 +1,32 @@
 metadata:
-  last_updated: '2026-03-23'
+  last_updated: '2026-04-20'
 papers:
   tzmH1HIAAAAJ:2osOgNQ5qMEC:
-    citations: 8
+    citations: 9
     title: 'Recy-ctronics: Designing fully recyclable electronics with varied form factors'
     year: '2024'
   tzmH1HIAAAAJ:9yKSN-GCB0IC:
     citations: 7
     title: 'Meta-home: smart home digital twin design from the perspective of smart metaverse'
     year: '2023'
+  tzmH1HIAAAAJ:IjCSPb-OGe4C:
+    citations: 1
+    title: '3D Printing Soap: Exploring New Biodegrdable Materials and Creative Possibilities'
+    year: '2026'
+  tzmH1HIAAAAJ:UeHWp8X0CEIC:
+    citations: 0
+    title: 'Interactive 3D-Printed Soap: Exploring Biodegradable and Ephemeral Material Interactions'
+    year: '2026'
   tzmH1HIAAAAJ:d1gkVwhDpl0C:
     citations: 2
     title: Cooking Method Detection Based on Electronic Nose in Smart Kitchen
     year: '2023'
   tzmH1HIAAAAJ:qjMakFHDy7sC:
-    citations: 1
+    citations: 3
     title: 'BIOGEM: A Fully Biodegradable Gelatin-Based McKibben Actuator with Embedded Sensing'
     year: '2025'
   tzmH1HIAAAAJ:u-x6o8ySG0sC:
-    citations: 0
+    citations: 1
     title: 'Futuring Social Assemblages: How Enmeshing AIs into Social Life Challenges the Individual and the Interpersonal'
     year: '2026'
   tzmH1HIAAAAJ:u5HHmVD_uO8C:
