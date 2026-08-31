@@ -1,4 +1,1 @@
-User-agent: *
-Disallow:
-
-Sitemap: https://yingtinggao666-ctrl.github.io/sitemap.xml
+User-agent: * Disallow: Sitemap: https://yingtinggao666-ctrl.github.io/sitemap.xml
