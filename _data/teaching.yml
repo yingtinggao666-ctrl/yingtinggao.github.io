@@ -1,0 +1,24 @@
+intro: >
+  At Georgia Tech, I have supported courses across sustainable computing,
+  health sensing, interactive systems prototyping, and user interface design.
+
+courses:
+  - title: Health Sensing (CS 4711)
+    institution: Georgia Institute of Technology
+    term: Summer 2026
+    role: Teaching Assistant
+
+  - title: Computing and Sustainability (CS 8803)
+    institution: Georgia Institute of Technology
+    term: Spring 2026
+    role: Teaching Assistant
+
+  - title: Prototyping Interactive Systems (CS 6452)
+    institution: Georgia Institute of Technology
+    term: Fall 2024
+    role: Teaching Assistant
+
+  - title: Intro UI Design (CS 3751)
+    institution: Georgia Institute of Technology
+    term: Summer 2024
+    role: Teaching Assistant

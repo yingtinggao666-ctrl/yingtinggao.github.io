@@ -1,0 +1,23 @@
+---
+layout: default
+---
+{% capture extended_abstracts %}
+  {% bibliography --group_by none --query @misc %}
+{% endcapture %}
+<main class="publications-page page-shell">
+  <section class="publication-section" aria-labelledby="papers-heading">
+    <h2 id="papers-heading" class="section-kicker">Papers</h2>
+    <div class="publications reference-publications">
+      {% bibliography --group_by none --query @inproceedings %}
+    </div>
+  </section>
+
+  {% if extended_abstracts contains 'publication-item' %}
+    <section class="publication-section" aria-labelledby="abstracts-heading">
+      <h2 id="abstracts-heading" class="section-kicker">Extended Abstracts</h2>
+      <div class="publications reference-publications">
+        {{ extended_abstracts }}
+      </div>
+    </section>
+  {% endif %}
+</main>

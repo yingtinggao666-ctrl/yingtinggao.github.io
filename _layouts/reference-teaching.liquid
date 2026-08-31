@@ -1,0 +1,56 @@
+---
+layout: default
+---
+<main class="teaching-page page-shell">
+  <header class="page-heading teaching-heading">
+    <h1>{{ page.title }}</h1>
+    <p>{{ site.data.teaching.intro }}</p>
+  </header>
+
+  {% for course in site.data.teaching.courses %}
+    <section class="course-section" aria-labelledby="course-{{ forloop.index }}">
+      <header class="course-heading">
+        <h2 id="course-{{ forloop.index }}">{{ course.title }}</h2>
+        <p>{{ course.institution }}{% if course.term %} <span aria-hidden="true">|</span> {{ course.term }}{% elsif course.years %} <span aria-hidden="true">|</span> {{ course.years }}{% endif %}</p>
+        {% if course.role %}<p>{{ course.role }}</p>{% endif %}
+        {% if course.length or course.level %}
+          <p>{% if course.length %}Course Length: {{ course.length }}{% endif %}{% if course.length and course.level %} <span class="meta-gap">{% endif %}{% if course.level %}Level: {{ course.level }}{% endif %}{% if course.length and course.level %}</span>{% endif %}</p>
+        {% endif %}
+        {% if course.link %}<a class="text-link" href="{{ course.link }}">Course Link</a>{% endif %}
+      </header>
+      {% if course.description %}<div class="course-description">{{ course.description | markdownify }}</div>{% endif %}
+
+      {% if course.student_projects %}
+        <h3>Student Projects</h3>
+        <div class="student-project-grid">
+          {% for project in course.student_projects %}
+            <article class="student-project">
+              <img src="{{ project.image | relative_url }}" alt="{{ project.title }}" loading="lazy">
+              <div class="student-project-copy">
+                <h4>{{ project.title }}</h4>
+                <p class="student-name">{{ project.student }}</p>
+                <p>{{ project.description }}</p>
+                {% if project.link %}<a class="text-link" href="{{ project.link }}">Project Link</a>{% endif %}
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </section>
+  {% endfor %}
+
+  {% if site.data.teaching.workshops and site.data.teaching.workshops.size > 0 %}
+    <section class="workshops-section" aria-labelledby="workshops-heading">
+      <h2 id="workshops-heading">Workshops</h2>
+      {% if site.data.teaching.workshops_intro %}<div class="prose">{{ site.data.teaching.workshops_intro | markdownify }}</div>{% endif %}
+      <div class="workshop-grid">
+        {% for workshop in site.data.teaching.workshops %}
+          <figure class="workshop-card">
+            <img src="{{ workshop.image | relative_url }}" alt="{{ workshop.title }}" loading="lazy">
+            <figcaption>{{ workshop.title }}</figcaption>
+          </figure>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+</main>

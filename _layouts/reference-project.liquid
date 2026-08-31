@@ -1,0 +1,155 @@
+---
+layout: default
+---
+<article class="project-detail page-shell">
+  <header class="project-detail-heading">
+    <p class="back-link"><a href="{{ '/projects/' | relative_url }}">← All projects</a></p>
+    <h1>{{ page.title }}</h1>
+    {% if page.subtitle %}<h2>{{ page.subtitle }}</h2>{% endif %}
+  </header>
+
+  <div class="project-facts">
+    {% if page.keywords %}
+      <p><strong>Keywords:</strong> {{ page.keywords | join: ', ' }}</p>
+    {% endif %}
+    {% if page.project_credits %}
+      <p><strong>Project Credits:</strong> {{ page.project_credits }}</p>
+    {% endif %}
+    {% if page.publication %}
+      <p class="project-publication">
+        <strong>Publication:</strong> {{ page.publication.citation }}
+        {% if page.publication.pdf %}
+          {% if page.publication.pdf contains '://' %}
+            {% assign publication_pdf_url = page.publication.pdf %}
+          {% else %}
+            {% assign publication_pdf_url = page.publication.pdf | relative_url %}
+          {% endif %}
+          <a href="{{ publication_pdf_url }}">PDF</a>
+        {% endif %}
+        {% if page.publication.doi %}
+          {% if page.publication.doi contains '://' %}
+            {% assign publication_doi_url = page.publication.doi %}
+          {% else %}
+            {% assign publication_doi_url = page.publication.doi | prepend: 'https://doi.org/' %}
+          {% endif %}
+          <span aria-hidden="true">|</span>
+          <a href="{{ publication_doi_url }}">DOI</a>
+        {% endif %}
+      </p>
+      {% if page.publication.award %}
+        <p class="project-publication-award"><strong>Award:</strong> {{ page.publication.award }}</p>
+      {% endif %}
+    {% endif %}
+  </div>
+
+  {% if page.summary %}<div class="project-summary">{{ page.summary | markdownify }}</div>{% endif %}
+
+  {% assign project_content = content | strip %}
+  {% if project_content != '' %}<div class="project-body prose">{{ content }}</div>{% endif %}
+
+  {% if page.pre_video_sections %}
+    <div class="project-pre-video-sections">
+      {% for section in page.pre_video_sections %}
+        <section class="project-pre-video-section">
+          {% if section.title %}<h2>{{ section.title }}</h2>{% endif %}
+          <figure class="project-pre-video-image">
+            <img src="{{ section.image | relative_url }}" alt="{{ section.alt | default: section.title | escape }}" loading="lazy">
+            {% if section.caption %}<figcaption>{{ section.caption }}</figcaption>{% endif %}
+          </figure>
+        </section>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if page.videos %}
+    <section id="project-videos" class="project-videos" aria-labelledby="project-videos-title">
+      <h2 id="project-videos-title">Video</h2>
+      <div class="project-video-grid">
+        {% for video in page.videos %}
+          <figure class="project-video-item">
+            <div class="project-video-frame">
+              {% if video.youtube_id %}
+                <iframe
+                  src="https://www.youtube-nocookie.com/embed/{{ video.youtube_id }}"
+                  title="{{ video.title | default: page.title | escape }}"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen
+                ></iframe>
+              {% elsif video.embed_url %}
+                <iframe
+                  src="{{ video.embed_url }}"
+                  title="{{ video.title | default: page.title | escape }}"
+                  loading="lazy"
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+              {% elsif video.source %}
+                <video controls preload="metadata" {% if video.poster %}poster="{{ video.poster | relative_url }}"{% endif %}>
+                  <source src="{{ video.source | relative_url }}"{% if video.type %} type="{{ video.type }}"{% endif %}>
+                  Your browser does not support embedded video.
+                </video>
+              {% endif %}
+            </div>
+            {% if video.title %}<figcaption>{{ video.title }}</figcaption>{% endif %}
+          </figure>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+  {% if page.gallery_sets %}
+    <div class="project-gallery-sets">
+      {% for gallery_set in page.gallery_sets %}
+        {% assign first_item = gallery_set.items | first %}
+        <section class="project-gallery-set" data-project-gallery aria-labelledby="gallery-set-{{ forloop.index }}">
+          <h2 id="gallery-set-{{ forloop.index }}">{{ gallery_set.title }}</h2>
+          <figure class="project-gallery-stage">
+            <div class="project-gallery-media">
+              <img
+                data-gallery-main
+                src="{{ first_item.image | relative_url }}"
+                alt="{{ first_item.alt | default: gallery_set.title }}"
+                loading="lazy"
+              >
+              <button class="project-gallery-arrow is-previous" type="button" data-gallery-previous aria-label="Previous image">
+                <span aria-hidden="true">‹</span>
+              </button>
+              <button class="project-gallery-arrow is-next" type="button" data-gallery-next aria-label="Next image">
+                <span aria-hidden="true">›</span>
+              </button>
+            </div>
+            <figcaption data-gallery-caption>{{ first_item.caption }}</figcaption>
+          </figure>
+          <div class="project-gallery-thumbnails" role="list" aria-label="{{ gallery_set.title }} image selector">
+            {% for item in gallery_set.items %}
+              <button
+                class="project-gallery-thumbnail{% if forloop.first %} is-active{% endif %}"
+                type="button"
+                role="listitem"
+                aria-label="Show {{ item.alt | default: gallery_set.title | escape }}"
+                aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                data-gallery-image="{{ item.image | relative_url }}"
+                data-gallery-alt="{{ item.alt | default: gallery_set.title | escape }}"
+                data-gallery-caption="{{ item.caption | escape }}"
+              >
+                <img src="{{ item.thumbnail | default: item.image | relative_url }}" alt="" loading="lazy">
+              </button>
+            {% endfor %}
+          </div>
+        </section>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if page.gallery %}
+    <div class="project-image-gallery">
+      {% for item in page.gallery %}
+        <figure class="project-gallery-item {% if item.width %}is-{{ item.width }}{% endif %}">
+          <img src="{{ item.image | relative_url }}" alt="{{ item.alt | default: page.title }}" loading="lazy">
+          {% if item.caption %}<figcaption>{{ item.caption }}</figcaption>{% endif %}
+        </figure>
+      {% endfor %}
+    </div>
+  {% endif %}
+</article>

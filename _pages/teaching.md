@@ -1,10 +1,7 @@
 ---
-layout: page
+layout: reference-teaching
 permalink: /teaching/
 title: Teaching
 nav: true
-nav_order: 6
-calendar: true
+nav_order: 4
 ---
-
-{% include courses.liquid %}

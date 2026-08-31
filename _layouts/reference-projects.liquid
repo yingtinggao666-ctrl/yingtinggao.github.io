@@ -1,0 +1,27 @@
+---
+layout: default
+---
+<main class="projects-page page-shell">
+  <header class="page-heading projects-heading">
+    <h1>{{ page.title }}</h1>
+    {% if page.intro %}<p>{{ page.intro }}</p>{% endif %}
+  </header>
+
+  {% assign visible_projects = site.pages | where_exp: 'project', 'project.project_id != nil' | where_exp: 'project', 'project.published != false' %}
+  {% assign sorted_projects = visible_projects | sort: 'importance' %}
+  <div class="project-gallery">
+    {% for project in sorted_projects %}
+      <a class="project-tile" href="{{ project.url | relative_url }}" aria-label="View {{ project.title }}">
+        <img
+          src="{{ project.cover | relative_url }}"
+          alt="{{ project.cover_alt | default: project.title }}"
+          loading="lazy"
+        >
+        <span class="project-overlay">
+          <span class="project-tile-title">{{ project.title }}</span>
+          {% if project.short_description %}<span class="project-tile-subtitle">{{ project.short_description }}</span>{% endif %}
+        </span>
+      </a>
+    {% endfor %}
+  </div>
+</main>

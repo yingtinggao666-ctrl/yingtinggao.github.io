@@ -1,0 +1,104 @@
+---
+---
+{% assign linked_project_id = entry.project | strip %}
+{% assign matching_projects = site.pages | where: 'project_id', linked_project_id %}
+{% assign matching_project = matching_projects | first %}
+{% assign is_extended_abstract = false %}
+{% if entry.type == 'misc' %}{% assign is_extended_abstract = true %}{% endif %}
+{% assign has_entry_image = false %}
+{% if entry.image %}{% assign has_entry_image = true %}{% endif %}
+<article class="publication-item{% if is_extended_abstract %} is-extended-abstract{% endif %}{% if has_entry_image %} has-publication-image{% endif %}" id="{{ entry.key }}">
+  {% unless is_extended_abstract and has_entry_image == false %}
+    <div class="publication-media">
+      {% if entry.image %}
+        <img
+          src="{{ entry.image | relative_url }}"
+          alt="Cover image for {{ entry.title | strip_html | escape }}"
+          loading="lazy"
+        >
+      {% elsif matching_project and matching_project.cover %}
+        <img
+          src="{{ matching_project.cover | relative_url }}"
+          alt="{{ matching_project.cover_alt | default: matching_project.title }}"
+          loading="lazy"
+        >
+      {% else %}
+        <div class="publication-placeholder" aria-hidden="true"></div>
+      {% endif %}
+    </div>
+  {% endunless %}
+
+  <div class="publication-copy">
+    <h3 class="publication-title">{{ entry.title }}</h3>
+    {% if entry.subtitle %}<p class="publication-subtitle">{{ entry.subtitle }}</p>{% endif %}
+
+    <p class="publication-authors">
+      {%- for author in entry.author_array -%}
+        {% assign author_last_name = author.last | regex_replace: '[*∗†‡§¶‖&^]', '' %}
+        {% assign author_is_self = false %}
+        {% if site.scholar.last_name contains author_last_name %}
+          {% if site.scholar.first_name contains author.first %}{% assign author_is_self = true %}{% endif %}
+        {% endif %}
+        {% if author_is_self %}<strong>{{ author.first }} {{ author.last }}</strong>{% else %}{{ author.first }} {{ author.last }}{% endif %}{% unless forloop.last %}, {% endunless %}
+      {%- endfor -%}
+    </p>
+
+    <p class="publication-meta">
+      {% if entry.abbr %}<span class="publication-venue">{{ entry.abbr }} {{ entry.year }}</span>{% elsif entry.year %}<span class="publication-venue">{{ entry.year }}</span>{% endif %}
+      {% assign has_previous_link = false %}
+      {% if entry.pdf %}
+        {% assign pdf_first_character = entry.pdf | slice: 0 %}
+        {% if entry.pdf contains '://' %}
+          {% assign pdf_url = entry.pdf %}
+        {% elsif pdf_first_character == '/' %}
+          {% assign pdf_url = entry.pdf | relative_url %}
+        {% else %}
+          {% assign pdf_url = entry.pdf | prepend: '/assets/pdf/' | relative_url %}
+        {% endif %}
+        <a href="{{ pdf_url }}">PDF</a>{% assign has_previous_link = true %}
+      {% endif %}
+      {% if entry.doi %}{% if has_previous_link %}<span aria-hidden="true">|</span>{% endif %}<a href="https://doi.org/{{ entry.doi }}">DOI</a>{% assign has_previous_link = true %}{% endif %}
+      {% if entry.project and is_extended_abstract == false %}
+        {% if matching_project %}
+          {% if has_previous_link %}<span aria-hidden="true">|</span>{% endif %}<a href="{{ matching_project.url | relative_url }}">Project Page</a>{% assign has_previous_link = true %}
+        {% endif %}
+      {% endif %}
+      {% if entry.code %}{% if has_previous_link %}<span aria-hidden="true">|</span>{% endif %}<a href="{{ entry.code }}">Code</a>{% assign has_previous_link = true %}{% endif %}
+    </p>
+
+    {% if matching_project.videos and is_extended_abstract == false %}
+      <details class="publication-video-preview">
+        <summary>Video</summary>
+        {% for video in matching_project.videos %}
+          <div class="project-video-frame">
+            {% if video.youtube_id %}
+              <iframe
+                src="https://www.youtube-nocookie.com/embed/{{ video.youtube_id }}"
+                title="{{ video.title | default: matching_project.title | escape }}"
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+              ></iframe>
+            {% elsif video.embed_url %}
+              <iframe
+                src="{{ video.embed_url }}"
+                title="{{ video.title | default: matching_project.title | escape }}"
+                loading="lazy"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowfullscreen
+              ></iframe>
+            {% elsif video.source %}
+              <video controls preload="metadata" {% if video.poster %}poster="{{ video.poster | relative_url }}"{% endif %}>
+                <source src="{{ video.source | relative_url }}"{% if video.type %} type="{{ video.type }}"{% endif %}>
+              </video>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </details>
+    {% endif %}
+
+    {% if entry.award %}
+      <p class="publication-award">{{ entry.award }}</p>
+    {% endif %}
+  </div>
+</article>

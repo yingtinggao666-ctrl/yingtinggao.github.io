@@ -1,0 +1,40 @@
+---
+layout: default
+---
+<main class="home-page">
+  <section class="home-intro" aria-labelledby="about-title">
+    <div class="home-profile-card">
+      <div class="home-portrait">
+        {% assign profile_image_path = page.profile.image | prepend: '/assets/img/' %}
+        <img src="{{ profile_image_path | relative_url }}" alt="{{ page.profile.alt }}" loading="eager">
+      </div>
+      <p class="home-position">{{ page.position }}</p>
+      <p class="home-affiliation">{{ page.affiliation }}{% if page.location %}, {{ page.location }}{% endif %}</p>
+      <p class="home-links">
+        {% if page.email_url %}
+          <a href="{{ page.email_url }}">Email</a>
+          <span aria-hidden="true">|</span>
+        {% endif %}
+        <a href="{{ page.cv_url | relative_url }}">CV</a>
+        <span aria-hidden="true">|</span>
+        <a href="{{ page.scholar_url }}">Google Scholar</a>
+      </p>
+    </div>
+    <div class="about-section">
+      <h1 id="about-title" class="section-title">About</h1>
+      <div class="prose">{{ content }}</div>
+    </div>
+  </section>
+
+  {% if page.selected_papers %}
+    <section class="content-section home-publications" aria-labelledby="publications-title">
+      <div class="section-heading-row">
+        <h2 id="publications-title" class="section-title">Publications</h2>
+        <a class="section-link" href="{{ '/publications/' | relative_url }}">View all</a>
+      </div>
+      <div class="publications reference-publications">
+        {% bibliography --group_by none --query @inproceedings[selected=true] %}
+      </div>
+    </section>
+  {% endif %}
+</main>
